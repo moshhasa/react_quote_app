@@ -54,7 +54,7 @@ const QuoteForm = (props) => {
       </form>
     </Card>
     </>
-  );
-};
+    )
+  }
 
-export default QuoteForm;
+  export default QuoteForm
