@@ -1,13 +1,31 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import NoQuotesFound from '../components/quotes/NoQuotesFound'
 import QuoteList from '../components/quotes/QuoteList'
+import LoadingSpinner from '../components/UI/LoadingSpinner'
+import useHttp from '../hooks/use-http'
+import { getAllQuotes } from '../lib/api'
 
-const DUMMY_QUOTES = [
-    { id : 1 , author : 'John', text : 'My first quote'},
-    { id : 2 , author : 'Max', text : 'My second quote'},
-    { id : 3 , author : 'Dave', text : 'My third quote'}
-]
 const Quotes = () => {
-    return  <QuoteList quotes={DUMMY_QUOTES}/>
+    const {sendRequest, status, data : quotes, error} =  useHttp(getAllQuotes, true);
+    useEffect(() => {
+       sendRequest()
+    }, [sendRequest])
+
+    if(status.pending)
+    {
+        return <div className='cantered' ><LoadingSpinner/> </div>
+    }
+    if(status.error)
+    {
+        return <div className='cantered focus' >{error}</div>
+    }
+
+    if(status.completed && (!quotes || quotes.length === 0))
+    {
+        return <NoQuotesFound />
+    }
+
+    return  <QuoteList quotes={quotes}/>
 }
 
 export default Quotes

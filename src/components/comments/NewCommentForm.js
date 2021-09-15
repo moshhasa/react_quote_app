@@ -1,15 +1,22 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
+import { useParams } from 'react-router';
+import useHttp, { httpStatus } from '../../hooks/use-http';
+import { addComment } from '../../lib/api';
 
 import classes from './NewCommentForm.module.css';
 
 const NewCommentForm = (props) => {
   const commentTextRef = useRef();
 
+  const params = useParams();
+  const {sendRequest, status} = useHttp(addComment)
+
+  
   const submitFormHandler = (event) => {
     event.preventDefault();
 
     // optional: Could validate here
-
+    sendRequest({quoteId : params.quoteId, commentData : { text : commentTextRef.current.value}});
     // send comment to server
   };
 

@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { useHistory, useLocation, useRouteMatch } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 
 import QuoteItem from './QuoteItem';
 import classes from './QuoteList.module.css';
