@@ -1,17 +1,16 @@
 import { useReducer, useCallback } from 'react';
 
+export const httpStatus ={
+  completed : 'completed',
+  pending : 'pending'
+}
 
 function httpReducer(state, action) {
   if (action.type === 'SEND') {
     return {
       data: null,
       error: null,
-      status: {
-        name : 'pending',
-        pending : true,
-        completed: false,
-        error : false
-      },
+      status: httpStatus.pending,
     };
   }
 
@@ -19,12 +18,7 @@ function httpReducer(state, action) {
     return {
       data: action.responseData,
       error: null,
-      status: {
-        name : 'completed',
-        pending : false,
-        completed: true,
-        error : false
-      }
+      status: httpStatus.completed,
     };
   }
 
@@ -32,12 +26,7 @@ function httpReducer(state, action) {
     return {
       data: null,
       error: action.errorMessage,
-      status: {
-        name : 'completed',
-        pending : false,
-        completed: true,
-        error : true
-      }
+      status: httpStatus.completed,
     };
   }
 
@@ -48,7 +37,7 @@ function httpReducer(state, action) {
 
 const useHttp = (requestFunction, startWithPending = false) => {
   const [httpState, dispatch] = useReducer(httpReducer, {
-    status: startWithPending ? 'pending' : null,
+    status: startWithPending ? httpStatus.pending : null,
     data: null,
     error: null,
   });
